@@ -84,7 +84,7 @@ An example equal to 1000 words :D
         {
             "title": "Main_Menu",
             "main":true,
-            "logo_path": null,
+            "logo_path": null,  // NOT IMPLEMENTED
             "header_msg": "This is the header for the main menu",
             "footer_msg": "Gabriel Artemie@2023",
             "return_to_previous": false,
@@ -93,24 +93,24 @@ An example equal to 1000 words :D
             "options": [
                 {
                     "option": "SwitchToSubmenu2",
-                    "include_help": true,
-                    "help": "SwitchToSubmenu2 help",
+                    "include_help": true,  // NOT IMPLEMENTED
+                    "help": "SwitchToSubmenu2 help",  // NOT IMPLEMENTED
                     "switch":"Second_Menu",
-                    "action": null
+                    "action": null  // NOT IMPLEMENTED
                 },
                 {
                     "option": "Print_and_wait",
-                    "include_help": true,
-                    "help": "Print_and_wait help",
+                    "include_help": true,  // NOT IMPLEMENTED
+                    "help": "Print_and_wait help",  // NOT IMPLEMENTED
                     "switch":null,
-                    "action": null
+                    "action": null  // NOT IMPLEMENTED
                 },
                 {
                     "option": "Trigger_an_error",
-                    "include_help": true,
-                    "help": "Trigger_an_error help",
+                    "include_help": true,  // NOT IMPLEMENTED
+                    "help": "Trigger_an_error help",  // NOT IMPLEMENTED
                     "switch":null,
-                    "action": null
+                    "action": null  // NOT IMPLEMENTED
                 }
             ],
             "style":null // NOT IMPLEMENTED: to use a special style for each submenu
@@ -118,7 +118,7 @@ An example equal to 1000 words :D
         {
             "title": "Second_Menu",
             "main":false,
-            "logo_path": null,
+            "logo_path": null,  // NOT IMPLEMENTED
             "header_msg": "This is another header message for submenu2",
             "footer_msg": "Gabriel Artemie@2023",
             "return_to_previous": true,
@@ -127,17 +127,17 @@ An example equal to 1000 words :D
             "options": [
                 {
                     "option": "Accept_an_input",
-                    "include_help": true,
-                    "help": "option1 help",
+                    "include_help": true,  // NOT IMPLEMENTED
+                    "help": "option1 help",  // NOT IMPLEMENTED
                     "switch":null,
-                    "action": null
+                    "action": null  // NOT IMPLEMENTED
                 },
                 {
                     "option": "Print_the_state",
-                    "include_help": true,
-                    "help": "option2 help",
+                    "include_help": true,  // NOT IMPLEMENTED
+                    "help": "option2 help",  // NOT IMPLEMENTED
                     "switch":null,
-                    "action": null
+                    "action": null  // NOT IMPLEMENTED
                 }
             ],
             "style":null // NOT IMPLEMENTED: to use a special style for each submenu
@@ -146,7 +146,7 @@ An example equal to 1000 words :D
     "error_handling":{
         "name":"Error",
         "include":true,
-        "log_path":null
+        "log_path":null  // NOT IMPLEMENTED
     },
     "style_sheet_path":null, //NOT IMPLEMENTED: a path to a separate style sheet
     "default_style":{
