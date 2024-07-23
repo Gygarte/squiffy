@@ -17,12 +17,19 @@ class Style(abstract_style.AbstractStyle):
         self._help = help
 
     def create(
-        self, title: str, subtitle: str, header_msg: str, content: dict, footer_msg: str
+        self,
+        title: str,
+        subtitle: str,
+        header_msg: str,
+        content: dict,
+        footer_msg: str,
     ) -> str:
         self._header.title = title
         self._header.subtitle = subtitle
         self._header.message = header_msg
+
         self._content.content = content
+
         self._footer.message = footer_msg
 
         return "\n".join(

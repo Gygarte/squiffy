@@ -2,12 +2,12 @@ import textwrap
 from typing import Union
 from squiffy.abstract import abstract_style
 from .contants import STANDARD_WIDTH
-from .borders import DefaultBorderStyle
+from .borders import BORDERS
 
 
 class TextGenerator:
-    def __init__(self) -> None:
-        self._border = DefaultBorderStyle()
+    def __init__(self, border_style: str = "light") -> None:
+        self._border = BORDERS.get(border_style)()
 
     def generate(
         self,
@@ -195,7 +195,7 @@ class StyleHeader(abstract_style.AbstractStyleHeader):
         self._border: str = border
 
     def create(self) -> str:
-        text_generator = TextGenerator()
+        text_generator = TextGenerator(self._border)
         return text_generator.generate(
             screen_h=self._screen_hight,
             screen_w=self._screen_width,
@@ -255,6 +255,14 @@ class StyleHeader(abstract_style.AbstractStyleHeader):
     def padding(self, padding: Padding) -> None:
         self._padding = padding
 
+    @property
+    def border(self) -> str:
+        return self._border
+
+    @border.setter
+    def border(self, border: str) -> None:
+        self._border = border
+
 
 class StyleFooter(abstract_style.AbstractStyleFooter):
     def __init__(
@@ -269,7 +277,7 @@ class StyleFooter(abstract_style.AbstractStyleFooter):
         self._border: str = border
 
     def create(self) -> str:
-        text_generator = TextGenerator()
+        text_generator = TextGenerator(self._border)
         return text_generator.generate(
             screen_h=self._hight,
             screen_w=self._width,
@@ -313,6 +321,14 @@ class StyleFooter(abstract_style.AbstractStyleFooter):
     def padding(self, padding: Padding) -> None:
         self._padding = padding
 
+    @property
+    def border(self) -> str:
+        return self._border
+
+    @border.setter
+    def border(self, border: str) -> None:
+        self._border = border
+
 
 class StyleContent(abstract_style.AbstractStyleContent):
     def __init__(
@@ -327,7 +343,7 @@ class StyleContent(abstract_style.AbstractStyleContent):
         self._border: str = border
 
     def create(self) -> str:
-        text_generator = TextGenerator()
+        text_generator = TextGenerator(self._border)
         return text_generator.generate(
             screen_h=self._hight,
             screen_w=self._width,
@@ -370,3 +386,11 @@ class StyleContent(abstract_style.AbstractStyleContent):
     @padding.setter
     def padding(self, padding: Padding) -> None:
         self._padding = padding
+
+    @property
+    def border(self) -> str:
+        return self._border
+
+    @border.setter
+    def border(self, border: str) -> None:
+        self._border = border

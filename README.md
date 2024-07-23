@@ -162,7 +162,7 @@ An example equal to 1000 words :D
             "left":2
         },
         "border":{
-            "type":"*"
+            "type":"light" // You can chouse from "light", "thick" and "double" border style
         }
     }
 }

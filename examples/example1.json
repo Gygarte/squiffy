@@ -81,7 +81,7 @@
             "left":2
         },
         "border":{
-            "type":"*"
+            "type":"double"
         }
     }
 }

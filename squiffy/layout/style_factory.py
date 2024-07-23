@@ -12,6 +12,7 @@ class StyleFactory(abstract_style.AbstractStyleFactory):
         self._footer: abstract_style.AbstractStyleFooter = None
         self._content: abstract_style.AbstractStyleContent = None
         self._help: abstract_style.AbstractStyleHelp = None
+        self._border: str = None
 
     def create(self, style_sheet: dict) -> Style:
         self._parse_style_sheet(style_sheet)
