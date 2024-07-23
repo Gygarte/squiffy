@@ -2,14 +2,17 @@ import textwrap
 from typing import Union
 from squiffy.abstract import abstract_style
 from .contants import STANDARD_WIDTH
+from .borders import DefaultBorderStyle
 
 
 class TextGenerator:
+    def __init__(self) -> None:
+        self._border = DefaultBorderStyle()
+
     def generate(
         self,
         screen_h: int,
         screen_w: int,
-        border_style: str,
         padding_top: int,
         padding_bottom: int,
         padding_left: int,
@@ -26,13 +29,18 @@ class TextGenerator:
 
         form = list([])
 
-        form.append(border_style * total_width)
+        # Adding the top border
+        form.append(
+            self._border.top_left_corner
+            + self._border.top_horizontal * (total_width - 2)
+            + self._border.top_right_corner
+        )
+
         if padding_top > 0:
             for _ in range(padding_top):
                 form.append(
                     self.row(
                         width=total_width,
-                        border_style=border_style,
                         padding_left=padding_left,
                         padding_right=padding_right,
                         alignment=alignment,
@@ -44,7 +52,6 @@ class TextGenerator:
                 form.append(
                     self.row(
                         width=total_width,
-                        border_style=border_style,
                         padding_left=padding_left,
                         padding_right=padding_right,
                         text=line,
@@ -57,21 +64,24 @@ class TextGenerator:
                 form.append(
                     self.row(
                         width=total_width,
-                        border_style=border_style,
                         padding_left=padding_left,
                         padding_right=padding_right,
                         alignment=alignment,
                     )
                 )
 
-        form.append(border_style * total_width)
+        # Adding the bottom border
+        form.append(
+            self._border.bottom_left_corner
+            + self._border.bottom_horizontal * (total_width - 2)
+            + self._border.bottom_right_corner
+        )
 
         return "\n".join(form)
 
-    @staticmethod
     def row(
+        self,
         width: int,
-        border_style: str,
         padding_left: int,
         padding_right: int,
         alignment: str = "center",
@@ -80,11 +90,11 @@ class TextGenerator:
         if text is None:
             margins: int = width - padding_left - padding_right - 2
             return (
-                border_style
+                self._border.left_vertical
                 + margins * " "
                 + padding_left * " "
                 + padding_right * " "
-                + border_style
+                + self._border.right_vertical
             )
 
         assert len(text) <= width, "Text is too long for the given width"
@@ -102,13 +112,13 @@ class TextGenerator:
                 right_margin = left_margin
 
             return (
-                border_style
+                self._border.left_vertical
                 + padding_left * " "
                 + left_margin * " "
                 + text
                 + right_margin * " "
                 + padding_right * " "
-                + border_style
+                + self._border.right_vertical
             )
         elif alignment == "left":
             right_margin: int = (
@@ -116,12 +126,12 @@ class TextGenerator:
             )  # the borders
 
             return (
-                border_style
+                self._border.left_vertical
                 + padding_left * " "
                 + text
                 + right_margin * " "
                 + padding_right * " "
-                + border_style
+                + self._border.right_vertical
             )
 
         elif alignment == "right":
@@ -130,12 +140,12 @@ class TextGenerator:
             )  # the borders
 
             return (
-                border_style
+                self._border.left_vertical
                 + padding_left * " "
                 + left_margin * " "
                 + text
                 + padding_right * " "
-                + border_style
+                + self._border.right_vertical
             )
 
     @staticmethod
@@ -189,7 +199,6 @@ class StyleHeader(abstract_style.AbstractStyleHeader):
         return text_generator.generate(
             screen_h=self._screen_hight,
             screen_w=self._screen_width,
-            border_style=self._border,
             padding_top=self._padding.top,
             padding_bottom=self._padding.bottom,
             padding_left=self._padding.left,
@@ -264,7 +273,6 @@ class StyleFooter(abstract_style.AbstractStyleFooter):
         return text_generator.generate(
             screen_h=self._hight,
             screen_w=self._width,
-            border_style=self._border,
             padding_top=self._padding.top,
             padding_bottom=self._padding.bottom,
             padding_left=self._padding.left,
@@ -323,7 +331,6 @@ class StyleContent(abstract_style.AbstractStyleContent):
         return text_generator.generate(
             screen_h=self._hight,
             screen_w=self._width,
-            border_style=self._border,
             padding_top=self._padding.top,
             padding_bottom=self._padding.bottom,
             padding_left=self._padding.left,
