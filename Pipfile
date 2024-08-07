@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 rich = "*"
 prompt-toolkit = "*"
-mypy = "*"
 
 [dev-packages]
 
