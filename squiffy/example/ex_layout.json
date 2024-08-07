@@ -1,0 +1,87 @@
+{
+    "submenu": [
+        {
+            "title": "Main_Menu",
+            "main":true,
+            "logo_path": null,
+            "header_msg": "This is the header for the main menu",
+            "footer_msg": "Gabriel Artemie@2023",
+            "return_to_previous": false,
+            "return_to_main": false,
+            "quit": true,
+            "options": [
+                {
+                    "option": "SwitchToSubmenu2",
+                    "include_help": true,
+                    "help": "SwitchToSubmenu2 help",
+                    "switch":"Second_Menu",
+                    "action": null
+                },
+                {
+                    "option": "Print_and_wait",
+                    "include_help": true,
+                    "help": "Print_and_wait help",
+                    "switch":null,
+                    "action": null
+                },
+                {
+                    "option": "Trigger_an_error",
+                    "include_help": true,
+                    "help": "Trigger_an_error help",
+                    "switch":null,
+                    "action": null
+                }
+            ],
+            "style":null
+        },
+        {
+            "title": "Second_Menu",
+            "main":false,
+            "logo_path": null,
+            "header_msg": "This is another header message for submenu2",
+            "footer_msg": "Gabriel Artemie@2023",
+            "return_to_previous": true,
+            "return_to_main": true,
+            "quit": true,
+            "options": [
+                {
+                    "option": "Accept_an_input",
+                    "include_help": true,
+                    "help": "option1 help",
+                    "switch":null,
+                    "action": null
+                },
+                {
+                    "option": "Print_the_state",
+                    "include_help": true,
+                    "help": "option2 help",
+                    "switch":null,
+                    "action": null
+                }
+            ],
+            "style":null
+        }
+    ],
+    "error_handling":{
+        "name":"Error",
+        "include":true,
+        "log_path":null
+    },
+    "style_sheet_path":null,
+    "default_style":{
+        "dimensions":{
+            "type":"auto",
+            "width":null,
+            "height":null
+        },
+        "padding":{
+            "top":1,
+            "right":2,
+            "bottom":1,
+            "left":2
+        },
+        "border":{
+            "type":"double"
+        }
+    }
+}

@@ -310,11 +310,22 @@ if __name__ == "__main__":
 
 ## Examples
 
-We enjoy having an example ready to be explored so follow just write the following and enjoy our small and not-so-creative example.
+We enjoy having an example ready to be explored. just write the following and enjoy our small and not-so-creative example.
 
 ```bash
 
-python -m squiffy.__example__
+python -m squiffy.example.example
+
+```
+
+or if this fails, try to write the following in a *.py* file.
+
+```bash
+
+from squiffy import example
+
+if __name__ == "__main__":
+    example.main()
 
 ```
 
