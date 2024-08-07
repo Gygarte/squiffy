@@ -1,13 +1,13 @@
-# Tipsy - a light library for interactive CLI application
+# squiffy - a light library for interactive CLI application
 
-This is Tipsy, a small small library for developing and deploying (locally!!)
-small, interactive CLI applications. 
+This is squiffy, a small, small - wonderfully small -  library for developing and deploying locally 
+interactive CLI applications. 
 
 It's intended for things that should be done quickly, with prime focuse on 
 functionality and not on the infrastructure.
 
-It's intended for simple applications, that depend on user to make a selection
-and trigger an action.
+We aim to provide a bit of infrastructure for simple applications, that depend on user interaction
+which triggers custom actions.
 
 ## Table of Contents
 
@@ -20,8 +20,16 @@ and trigger an action.
 
 ## Installation
 
-Preferably use a virtualenv to run tipsy and the whole application. For the 
-moment pipenv could be used to deploy, install and run your application. 
+You can use *pip* to install squiffy into your environment.
+
+```bash
+
+pip install squiffy
+
+```
+
+Additionally we encourage usage of virtualenv to for development environments. 
+we recommend to use pipenv for your development environment. 
 
 Install pipenv using pip:
 
@@ -36,13 +44,20 @@ python -m pip install pipenv
 
 ```
 
-Navigate in the directory you wish to install tipsy and develop the app and
-clone the repo
+Navigate in the directory you wish to install squiffy into and develop the app and
+use *pipenv install* to install squiffy.
+
+```bash
+cd my_app
+pipenv install squiffy
+
+```
+If you want to modify squiffy to suit your need, just clone the repo:
 
 ```bash
 cd my_app
 git init.
-git clone https://github.com/Gygarte/tipsy.git
+git clone https://github.com/Gygarte/squiffy.git
 
 ```
 
@@ -62,21 +77,22 @@ python -m pipenv install --dev
 
 ```
 
-Start using tipsy in your project. 
+Start using squiffy in your project. 
+
 
 Note: Refer to the *pipenv* documentation here: https://pypi.org/project/pipenv/
 ## Usage
 
-Tipsy uses four mandatory items to setup the CLI application:
-1. **Application** main class to be used
-2. **LayoutFactory** main class for app layout construction
-3. **State** main class for configuring an internal state - which contains whatever informations
-is needed in the app
-4. **layout.json** the blueprint of the layout.
+Squiffy uses four mandatory items to setup the CLI application:
+1. **Application** the main class to be used
+2. **LayoutFactory** the main class for app layout construction
+3. **State** the main class for configuring an internal state - which contains whatever informations is needed in the app
+4. **layout.json** the blueprint of your application's layout.
 
 ### Creating a layout.json
 
-An example equal to 1000 words :D
+An example equals to 1000 words :D (please be advise that I purposfully let some keywords that 
+do nothing yet! Squiffy is still in alpha and I'm still a noob)
 
 ```json
 {
@@ -172,7 +188,7 @@ An example equal to 1000 words :D
 The layout is created by passing the path to the layout.json to the LayoutFactory constructor
 
 ```python
-from tipsy import LayoutFactory
+from squiffy import LayoutFactory
 
 layout = LayoutFactory('my_app/layout.json') 
 
@@ -181,8 +197,8 @@ layout = LayoutFactory('my_app/layout.json')
 ### The style
 
 The style sheet is still a simple approach for a kinda' retro style type.
-The inspiration for the style apperance was draw from the **console-menu** by @aergirhall
-(many many thanks to you for idea. I hope to see your project functional again!)
+The inspiration for the style apperance was drawn from the **console-menu** project by @aergirhall
+(many many thanks to you for the ideas and I hope you do not dissaprove that I've used them)
 
 From the above **layout.json** you can guess what styling options are available in this version. 
 
@@ -238,8 +254,8 @@ In order to do some stuff with all this we need some end function. The end funct
 Let's see an example:
 
 ```python
-from tipsy import State
-from tipsy.signals import OK, Error, Abort
+from squiffy import State
+from squiffy.signals import OK, Error, Abort
 
 def my_func(state:State) -> OK | Error | Abort:
 
@@ -254,8 +270,8 @@ If an error occured you can pass the following arguments to the **Error**: *orig
 
 ```python
 
-from tipsy import State
-from tipsy.signals import OK, Error, Abort
+from squiffy import State
+from squiffy.signals import OK, Error, Abort
 
 def my_func(state:State) -> OK | Error | Abort:
 
@@ -294,16 +310,29 @@ if __name__ == "__main__":
 
 ## Examples
 
-In order to run an example, just run the **__example__.py** from the root folder. I was lazy to solve some import issues.
+We enjoy having an example ready to be explored so follow just write the following and enjoy our small and not-so-creative example.
+
+```bash
+
+python -m squiffy.__example__
+
+```
 
 ## Future Developments
 
-TO BE CONTINUED
+1. Include the rendering and display of the logo based on a logo_path.
+2. Include a keybinding for visualizing the *help* information for each option on the menu.
+3. Include special stylesheet for each submenu (not sure I will follow this path tho!)
+4. Include error logging into dedicated file.
+5. Separate the style sheet from the layout sheet.
+6. Refactoring: improvements of the architecture, code redability, commenting and more.
+7. Include keybindings for common options like: *return_to_previous*, *return_to_main*, *quit* and others.
+8. Write tests!  
 
 ## Contributing
 
-No public contributions are currently accepted!
+We accept contributions, sugestions and any thought on how to improve squiffy or what edge cases should be treated (ofc and new features suggestions). 
 
 ## License
 
-No, not yet!
+Please see the License section.
