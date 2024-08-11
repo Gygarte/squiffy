@@ -110,7 +110,7 @@ class Submenu(AbstractSubmenu):
                 Item(option="QUIT", help="Quit the application", signal=signals.Quit())
             )
 
-    def _show_prompt(self) -> None:
+    def _show_prompt(self) -> int:
         option = int(
             prompt(
                 ">> ",

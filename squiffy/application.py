@@ -4,13 +4,13 @@ from .abstract import abstract_application
 from .layout import layout_factory
 from .state import State
 from . import utils, signals
-from squiffy.context import executor, context2
+from squiffy.context import context, executor
 
 
 class Application(abstract_application.AbstractApplication):
     def __init__(self, layout: layout_factory.LayoutFactory, state: State) -> None:
         self._layout = layout
-        self._context = context2.Context(master=self)
+        self._context = context.Context(application=self)
 
         self._menu = self._layout.create()
         self._menu._context = self._context
@@ -34,9 +34,6 @@ class Application(abstract_application.AbstractApplication):
         signal_signature: str = utils.generate_signal_name(submenu_name, option_name)
         exe = executor.Executor(signals.Do(signal_signature), function)
 
-        # Add the rounting observer and the executor to the context
-        # The observers will get the signature of the context (self) and
-        # interact with it directly.
         self._context.executors = exe
 
     def handle_errors(self, error: signals.Error) -> None:
@@ -45,7 +42,7 @@ class Application(abstract_application.AbstractApplication):
 
     def handle_ok(self, signal: signals.OK) -> None:
         if signal.is_payload():
-            self._state.load(signal.payload)
+            self._state.update(signal.payload)
 
     def handle_quit(self) -> None:
         self._running = False

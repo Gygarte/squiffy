@@ -84,6 +84,8 @@ class ItemsCollection(AbstractItemsCollection):
         try:
             item = self.get_item(idx)
         except KeyError:
+            # TODO: Refactor, if an option does not exist why should the user be able to select it? Raise an error
+            # in this case or route the error to the menu?
             return signals.Error(
                 origin=self.__uid, log_message="Item not found", traceback=format_exc()
             )

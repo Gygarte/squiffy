@@ -21,7 +21,7 @@ class Executor:
         try:
             self._context.handle_signal(self._callback(state))
         except Exception:
-            self._context.handle_errors(
+            self._context.handle_signal(
                 signals.Error(
                     origin=self._signal.signal,
                     log_message=f"""An error occurred while trying to execute the option.

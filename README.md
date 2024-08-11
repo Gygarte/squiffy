@@ -84,10 +84,10 @@ Note: Refer to the *pipenv* documentation here: https://pypi.org/project/pipenv/
 ## Usage
 
 Squiffy uses four mandatory items to setup the CLI application:
-1. **Application** the main class to be used
+1. **layout.json** the blueprint of your application's layout.
 2. **LayoutFactory** the main class for app layout construction
 3. **State** the main class for configuring an internal state - which contains whatever informations is needed in the app
-4. **layout.json** the blueprint of your application's layout.
+4. **Application** the main class to be used
 
 ### Creating a layout.json
 
@@ -184,6 +184,7 @@ do nothing yet! Squiffy is still in alpha and I'm still a noob)
 }
 
 ```
+### The *LayoutFactory*
 
 The layout is created by passing the path to the layout.json to the LayoutFactory constructor
 
@@ -206,11 +207,10 @@ Please see the [Future Developments](#future-developments) section bellow for de
 
 ### Setting a State
 
-A **State** keeps data that are used by the end functions. You can add specific configuration in the 
-**State** from the app initialization and from the end functions. 
+A **State** keeps data that are used by the callback functions. You can add specific configuration in the 
+**State** from the app initialization and from the callback functions. 
 
-The **State** is configured to be saved whenewer the app is quitting or an error is triggered. So, any 
-configurations passed to the **State** should implement a saving mechanism. 
+The **State** is configured to be saved whenewer the app is quitting or an error is triggered. So, any configurations passed to the **State** should implement a saving mechanism. 
 
 Let's assume:
 ```python
@@ -246,7 +246,7 @@ app = Application(layout=layout, state=state)
 app.run()
 ```
 
-### Setting end functions
+### Setting callback functions
 
 In order to do some stuff with all this we need some end function. The end functions should use the 
 **State** and return a signal like *OK*, *Error*, *Abort*

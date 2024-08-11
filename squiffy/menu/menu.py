@@ -113,6 +113,7 @@ class Menu(AbstractMenu):
             elif isinstance(self._context, abstract_context.AbstractContext):
                 self._context.handle_signal(signal)
         else:
+            # TODO: Refactor to raise an error when a submenu does not have a context set.
             self.handle_errors(
                 signals.Error(
                     origin=self._current_submenu.uid,
