@@ -48,8 +48,12 @@ class Application(abstract_application.AbstractApplication):
         self._running = False
         self._save_state()
 
-    def handle_abort(self) -> None:
-        pass
+    def handle_abort(self, signal: signals.Abort) -> None:
+        if isinstance(signal, signals.Abort):
+            # TODO: Implement abort handling or provide means of custom handling functions.
+            pass
+        else:
+            raise ValueError("Signal is not an instance of signals.Abort")
 
     def provide_state(self):
         return self._state
