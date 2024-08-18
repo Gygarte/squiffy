@@ -12,12 +12,22 @@ class TestApplication(unittest.TestCase):
     _application = Application(layout=_mock_layout, state=_mock_state)
     _application._menu = unittest.mock.Mock()
 
-    def test_run(self):
+    def test_run_under_KeyboardInnterrupt_or_EOFError(self):
         # Test if the run function sets _running to False when KeyboardInterrupt is raised
         self._application._menu.is_running = True
         self._application._menu.show.side_effect = KeyboardInterrupt()
         self._application.run()
         self.assertFalse(self._application._running)
+
+        self._application._menu.show.side_effect = EOFError()
+        self._application.run()
+        self.assertFalse(self._application._running)
+
+    def test_saving_state_when_wuit(self) -> None:
+        # Test if the run function saves the state when _running is False
+        self._application._menu.is_running = False
+        self._application.run()
+        self.assertEqual(self._application._state.save.call_count, 1)
 
     def test_add(self):
         # Test if the add function adds an executor to the context

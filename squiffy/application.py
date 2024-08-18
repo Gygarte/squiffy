@@ -26,8 +26,11 @@ class Application(abstract_application.AbstractApplication):
             try:
                 self._menu.show()
                 self._running = self._menu.is_running
-            except KeyboardInterrupt:
-                self._running = False
+
+                if self._running is False:
+                    self._save_state()
+            except KeyboardInterrupt or EOFError:
+                self.handle_quit()
 
     def add(self, function: Callable, option_name: str, submenu_name: str) -> None:
         # Create rounting observers and Executors for the signal signature and the function
