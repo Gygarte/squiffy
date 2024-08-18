@@ -26,8 +26,11 @@ class Application(abstract_application.AbstractApplication):
             try:
                 self._menu.show()
                 self._running = self._menu.is_running
-            except KeyboardInterrupt:
-                self._running = False
+
+                if self._running is False:
+                    self._save_state()
+            except KeyboardInterrupt or EOFError:
+                self.handle_quit()
 
     def add(self, function: Callable, option_name: str, submenu_name: str) -> None:
         # Create rounting observers and Executors for the signal signature and the function
@@ -48,8 +51,12 @@ class Application(abstract_application.AbstractApplication):
         self._running = False
         self._save_state()
 
-    def handle_abort(self) -> None:
-        pass
+    def handle_abort(self, signal: signals.Abort) -> None:
+        if isinstance(signal, signals.Abort):
+            # TODO: Implement abort handling or provide means of custom handling functions.
+            pass
+        else:
+            raise ValueError("Signal is not an instance of signals.Abort")
 
     def provide_state(self):
         return self._state

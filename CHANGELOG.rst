@@ -2,6 +2,12 @@
 Changelog
 ==================
 
+Version 0.1.3 (2024-08-14)
+--------------------------
+
+* [Bugfix] Fixed the issue with the error raised by the *Application* class when am *signal.Abort* is handled. The initial error was raised due to the fact that the *handle_abordt* method did not accepted the signal as an argument. The issue has been fixed now.
+* [Bugfix] Fixed quitting mechanism. The previous implementation did not autosave the state while quitting the application. The issue has been fixed now.
+* [Tests] Added unit test for *Application* class. Tested if signals returned from a callback function trigger an error (Error signal is tested for triggering the error handler, alongside unexpected errors). Additionally, tested if the quitting mechanism triggered the *save* method of the **State** during the quitting process.
 
 Version 0.1.2 (2024-08-12)
 --------------------------
