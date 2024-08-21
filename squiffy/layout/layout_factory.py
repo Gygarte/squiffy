@@ -6,7 +6,6 @@ from squiffy.menu import menu
 from squiffy.menu import submenu
 from squiffy.menu import menu_items
 from squiffy.menu import error_submenu
-from squiffy.screen import Screen
 from .style import Style
 from .style_factory import StyleFactory
 
@@ -17,7 +16,6 @@ from .style_factory import StyleFactory
 
 class LayoutFactory(AbstractLayoutFactory):
     def __init__(self, layout_file_path: Path, error_handler=None) -> None:
-        self._screen = Screen()
         self.error_handler = error_handler
 
         try:
@@ -144,7 +142,7 @@ class LayoutFactory(AbstractLayoutFactory):
             return self.error_handler
 
     def _create_style(self, style_sheet: dict | None = None) -> Style:
-        style_factory = StyleFactory(screen=self._screen)
+        style_factory = StyleFactory()
 
         if style_sheet is None:
             return style_factory.create(style_sheet=self._layout.get("default_style"))

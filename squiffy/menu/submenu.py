@@ -26,7 +26,7 @@ class Submenu(AbstractSubmenu):
         self._items: ItemsCollection = items
         self._logo = logo
 
-        self._style = style
+        self.style = style
         self._header_msg = header_msg
         self._footer_msg = footer_msg
 
@@ -40,13 +40,14 @@ class Submenu(AbstractSubmenu):
     def show(self) -> None:
         try:
             self._show_ui()
-            option = self._show_prompt()
+            # option = self._show_prompt()
         except KeyboardInterrupt:
             self.handle_signals(signals.Quit())
         except EOFError:
             self.handle_signals(signals.Quit())
         else:
-            self._emit_signal_from_selection(option)
+            # self._emit_signal_from_selection(option)
+            pass
 
     def handle_signals(self, signal: signals.Signal) -> None:
         if signal is None:
@@ -62,14 +63,22 @@ class Submenu(AbstractSubmenu):
         else:
             self._master_menu.handle_signals(signal)
 
+    def update_screen_size(self, hight: int, width: int) -> None:
+        """
+        Provide an interface to update the screen size which is contained
+        within the style object.
+        """
+        if self.style is not None:
+            self.style.set_dimensions(hight, width)
+
     def _show_ui(self) -> None:
         # Clear the console
         # TODO: Add support for a stilyzed console
 
         os.system("cls")
 
-        if self._style is not None:
-            style = self._style.create(
+        if self.style is not None:
+            style = self.style.create(
                 title=self._title,
                 subtitle="",
                 header_msg=self._header_msg,

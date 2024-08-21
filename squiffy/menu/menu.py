@@ -41,18 +41,10 @@ class Menu(AbstractMenu):
         self._submenu_order: list[Submenu, None] = [self._current_submenu]
 
     def show(self) -> None:
-        """
-        This method is the entry point of the menu.
-
-        It is inteded to run the menu continuously as long as no context is provided.
-        """
-
-        self._show()
-
-    def _show(self) -> None:
         # shows the items in the menu
         try:
             self._current_submenu.show()
+
         except Exception:
             self.handle_errors(
                 signals.Error(
@@ -174,6 +166,9 @@ class Menu(AbstractMenu):
     def _set_submenu_master_menu(self) -> None:
         for submenu in self._submenu:
             submenu.master_menu = self
+
+    def set_submenu_size(self, hight: int, width: int) -> None:
+        self._current_submenu.update_screen_size(hight, width)
 
     @property
     def controller(self):

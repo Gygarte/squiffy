@@ -3,11 +3,12 @@ import unittest.mock
 from squiffy import Application
 from squiffy.context import executor
 from squiffy import signals
+from squiffy.layout import layout_factory
 
 
 class TestApplication(unittest.TestCase):
     _mock_state = unittest.mock.Mock()
-    _mock_layout = unittest.mock.Mock()
+    _mock_layout = unittest.mock.Mock(spec_set=layout_factory.LayoutFactory)
 
     _application = Application(layout=_mock_layout, state=_mock_state)
     _application._menu = unittest.mock.Mock()
@@ -23,7 +24,7 @@ class TestApplication(unittest.TestCase):
         self._application.run()
         self.assertFalse(self._application._running)
 
-    def test_saving_state_when_wuit(self) -> None:
+    def test_saving_state_when_quit(self) -> None:
         # Test if the run function saves the state when _running is False
         self._application._menu.is_running = False
         self._application.run()
@@ -64,6 +65,12 @@ class TestApplication(unittest.TestCase):
             self._application.handle_abort(signals.Abort())
         except Exception:
             self.fail("handle_abort method raised an error")
+
+    def test_custom_abort_handler(self):
+        # Test if the handle_abort function calls the custom abort handler
+        self._application._abort_handler = unittest.mock.Mock()
+        self._application.handle_abort(signals.Abort())
+        self._application._abort_handler.assert_called_once()
 
     def test_provide_state(self):
         pass

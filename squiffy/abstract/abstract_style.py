@@ -17,7 +17,7 @@ class AbstractScreen(ABC):
         pass
 
     @abstractmethod
-    def async_get_sceen_size(self):
+    def async_set_screen_size(self):
         pass
 
 

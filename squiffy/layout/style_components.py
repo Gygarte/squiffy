@@ -1,7 +1,7 @@
 import textwrap
 from typing import Union
 from squiffy.abstract import abstract_style
-from .contants import STANDARD_WIDTH
+from .constants import STANDARD_WIDTH
 from .borders import BORDERS
 
 
@@ -207,6 +207,10 @@ class StyleHeader(abstract_style.AbstractStyleHeader):
             alignment="left",
         )
 
+    def set_dimensions(self, height: int, width: int) -> None:
+        self._screen_hight = height
+        self._screen_width = width
+
     @property
     def title(self) -> str:
         return self._title
@@ -289,6 +293,10 @@ class StyleFooter(abstract_style.AbstractStyleFooter):
             alignment="left",
         )
 
+    def set_dimensions(self, height: int, width: int) -> None:
+        self._hight = height
+        self._width = width
+
     @property
     def message(self) -> str:
         return self._message
@@ -354,6 +362,10 @@ class StyleContent(abstract_style.AbstractStyleContent):
             texts=self._content,
             alignment="left",
         )
+
+    def set_dimensions(self, height: int, width: int) -> None:
+        self._hight = height
+        self._width = width
 
     @property
     def content(self) -> list[tuple[int, str]]:

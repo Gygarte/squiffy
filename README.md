@@ -318,7 +318,7 @@ python -m squiffy.example.example
 
 ```
 
-or if this fails, try to write the following in a *.py* file.
+or if this fails, try to write the following in a *.py* file and run it.
 
 ```bash
 
