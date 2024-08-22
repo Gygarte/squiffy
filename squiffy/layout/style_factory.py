@@ -6,6 +6,7 @@ from .style import Style
 
 class StyleFactory(abstract_style.AbstractStyleFactory):
     def __init__(self) -> None:
+        self._autoscale = None
         self._header: abstract_style.AbstractStyleHeader = None
         self._footer: abstract_style.AbstractStyleFooter = None
         self._content: abstract_style.AbstractStyleContent = None
@@ -20,12 +21,14 @@ class StyleFactory(abstract_style.AbstractStyleFactory):
         self._parse_style_sheet(style_sheet)
 
         return Style(
+            autoscale=self._autoscale,
             header=self._header,
             footer=self._footer,
             content=self._content,
         )
 
     def _parse_style_sheet(self, style_sheet: dict) -> None:
+        self._autoscale = style_sheet["autoscale"]
         if style_sheet["dimensions"]["type"] == "auto":
             _padding_info: dict = style_sheet.get("padding")
             padding = Padding(

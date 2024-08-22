@@ -69,6 +69,7 @@
     },
     "style_sheet_path":null,
     "default_style":{
+        "autoscale":true,
         "dimensions":{
             "type":"auto",
             "width":null,

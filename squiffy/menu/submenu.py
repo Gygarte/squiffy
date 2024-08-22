@@ -40,13 +40,16 @@ class Submenu(AbstractSubmenu):
     def show(self) -> None:
         try:
             self._show_ui()
-            # option = self._show_prompt()
+            if not self.style.autoscale:
+                self.update_screen_size
+                option = self._show_prompt()
+                self._emit_signal_from_selection(option)
+
         except KeyboardInterrupt:
             self.handle_signals(signals.Quit())
         except EOFError:
             self.handle_signals(signals.Quit())
         else:
-            # self._emit_signal_from_selection(option)
             pass
 
     def handle_signals(self, signal: signals.Signal) -> None:
@@ -72,9 +75,6 @@ class Submenu(AbstractSubmenu):
             self.style.set_dimensions(hight, width)
 
     def _show_ui(self) -> None:
-        # Clear the console
-        # TODO: Add support for a stilyzed console
-
         os.system("cls")
 
         if self.style is not None:

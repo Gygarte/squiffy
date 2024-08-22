@@ -1,9 +1,18 @@
+import os
+import sys
+import queue
+import time
+import asyncio
+from threading import Thread, Event
+from pynput import keyboard
 from typing import Union
 from traceback import format_exc
 from .submenu import Submenu
 from squiffy.abstract.abstract_menu import AbstractMenu, AbstractMenuObserversLayer
 from squiffy.abstract import abstract_context
 from squiffy import signals
+from squiffy.layout.constants import FRAME_RATE
+from prompt_toolkit import PromptSession
 
 
 class Menu(AbstractMenu):
@@ -40,10 +49,27 @@ class Menu(AbstractMenu):
         # keeps the order of the submenus
         self._submenu_order: list[Submenu, None] = [self._current_submenu]
 
+        # Create threads periodically measure screen size
+        if self._current_submenu.style.autoscale:
+            self._create_helper_thread()
+            self._autoscale = True
+        else:
+            self._autoscale = False
+
+        # State variables. The _init variable permint the screen to be initialized when the
+        # application starts. The _refresh variable is used to refresh the screen when the user
+        # changes the screen dimensions.
+        self._init: bool = True
+        self._refresh: bool = False
+        self._loop = None
+
     def show(self) -> None:
         # shows the items in the menu
         try:
-            self._current_submenu.show()
+            if self._autoscale:
+                self._async_show_ui()
+            else:
+                self._current_submenu.show()
 
         except Exception:
             self.handle_errors(
@@ -53,6 +79,39 @@ class Menu(AbstractMenu):
                     traceback=format_exc(),
                 )
             )
+
+    def _async_show_ui(self):
+        if not self._size_queue.empty():
+            size = self._size_queue.get()
+            self._current_submenu.update_screen_size(
+                hight=size.lines, width=size.columns
+            )
+            self._refresh = True
+            # The event is reset when accepting user input is not possible due to
+            # redrawing the menu.
+            self._event.clear()
+
+        if self._init or self._refresh:
+            self._refresh = False
+            self._init = False
+            # We clear all the content that could get to the screen
+            self._clear_screen()
+            # The resized submenu is redrawn to the screen
+            self._current_submenu.show()
+        if self._loop is None:
+            try:
+                loop = asyncio.get_running_loop()
+                option = loop.run_until_complete(self._show_prompt)
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                option = loop.run_until_complete(self._show_prompt())
+        if option is not None:
+            self._current_submenu._emit_signal_from_selection(int(option))
+
+    async def _show_prompt(self):
+        session = PromptSession()
+        option = await session.prompt_async("Make a selection:")
+        return option
 
     def handle_errors(self, error: signals.Error) -> None:
         self._error_submenu.show(error)
@@ -105,7 +164,6 @@ class Menu(AbstractMenu):
             elif isinstance(self._context, abstract_context.AbstractContext):
                 self._context.handle_signal(signal)
         else:
-            # TODO: Refactor to raise an error when a submenu does not have a context set.
             self.handle_errors(
                 signals.Error(
                     origin=self._current_submenu.uid,
@@ -162,6 +220,7 @@ class Menu(AbstractMenu):
                 return
             else:
                 self._submenu_order.append(self._current_submenu)
+                self._refresh = True
 
     def _set_submenu_master_menu(self) -> None:
         for submenu in self._submenu:
@@ -169,6 +228,61 @@ class Menu(AbstractMenu):
 
     def set_submenu_size(self, hight: int, width: int) -> None:
         self._current_submenu.update_screen_size(hight, width)
+
+    @staticmethod
+    def _get_terminal_size(queue: queue.Queue, event: Event) -> None:
+        initial_size = os.get_terminal_size()
+        while True:
+            current_size = os.get_terminal_size()
+            if current_size.lines != initial_size.lines or (
+                current_size.columns != initial_size.columns
+            ):
+                queue.put(current_size)
+                initial_size = current_size
+
+            time.sleep(FRAME_RATE)
+
+    @staticmethod
+    def _show_input_prompt() -> None:
+        sys.stdout.write("Select an option:")
+        sys.stdout.flush()
+
+    def _get_user_input(self) -> None:
+        # Display the user input
+        if not self._input_queue.empty():
+            key = self._input_queue.get()
+
+            try:
+                if key.char.isdigit():
+                    self._user_input = int(key.char)
+                    sys.stdout.write(key.char)
+                    sys.stdout.flush()
+            except AttributeError:
+                pass
+
+            if key == keyboard.Key.enter:
+                self._current_submenu._emit_signal_from_selection(self._user_input)
+                self._user_input = None
+            elif key == keyboard.Key.backspace:
+                sys.stdout.write("\b \b")
+                sys.stdout.flush()
+
+    def _create_helper_thread(self) -> None:
+        self._event = Event()
+        self._size_queue = queue.Queue(maxsize=1)
+
+        self._size_thread = Thread(
+            target=self._get_terminal_size,
+            args=(self._size_queue, self._event),
+            daemon=True,
+        )
+
+        self._size_thread.start()
+
+    @staticmethod
+    def _clear_screen() -> None:
+        sys.stdout.flush()
+        os.system("cls")
 
     @property
     def controller(self):

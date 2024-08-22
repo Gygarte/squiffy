@@ -4,11 +4,13 @@ from squiffy.abstract import abstract_style
 class Style(abstract_style.AbstractStyle):
     def __init__(
         self,
+        autoscale: bool,
         header: abstract_style.AbstractStyleHeader = None,
         content: abstract_style.AbstractStyleContent = None,
         footer: abstract_style.AbstractStyleFooter = None,
         helps: abstract_style.AbstractStyleHelp = None,
     ) -> None:
+        self._autoscale = autoscale
         self._header = header
         self._content = content
         self._footer = footer
@@ -46,3 +48,7 @@ class Style(abstract_style.AbstractStyle):
 
         if self._help is not None:
             self._help.set_dimensions(height, width)
+
+    @property
+    def autoscale(self) -> bool:
+        return self._autoscale
