@@ -207,10 +207,15 @@ Please see the [Future Developments](#future-developments) section bellow for de
 
 ### Setting a State
 
-A **State** keeps data that are used by the callback functions. You can add specific configuration in the 
-**State** from the app initialization and from the callback functions. 
+A **State** keeps data that are used by the callback functions. Using this you can pass informations 
+to and from the callback funtions. 
 
-The **State** is configured to be saved whenewer the app is quitting or an error is triggered. So, any configurations passed to the **State** should implement a saving mechanism. 
+The **State** is configured to be saved whenewer the app is quitting or an error is triggered. So, any information passed to the **State** should implement a saving mechanism. If there is a reason for which 
+an object within the **State** should not be saved, pass it's name to the *save_except* attribute 
+during class initialization, or implement a *save_except:bool* attribute within the object itself. 
+
+No builtin objects are save excepted by default. So if you need to pass an builtin object through the 
+**State**, make sure to pass it's name to the *save_except*.
 
 Let's assume:
 ```python
@@ -234,6 +239,27 @@ So the **State** will be defined as:
 state = State({"config":MyConfig()})
 
 ```
+
+If you want to *MyConfig* from beeing saved, you can implement within the class the following:
+
+```python
+
+@dataclass
+class MyConfig:
+    save_except= True
+
+```
+
+or pass it's name to the *save_except*:
+
+```python
+
+state = State({'config':MyConfig()}, save_except= ['config'])
+```
+
+As we mentioned, a callback funtion can modify the **State** by returning an **OK** signal with *payload* containing a dictionary in the same format: **{name[str]:data[object]}**.
+
+What happens when no *save* method exists and the object is not excepted? An **StateContentNotSavable** is raised during **State** initialization. 
 
 ### Setting the application
 
@@ -339,6 +365,7 @@ if __name__ == "__main__":
 6. Refactoring: improvements of the architecture, code redability, commenting and more.
 7. Include keybindings for common options like: *return_to_previous*, *return_to_main*, *quit* and others.
 8. Write tests!  
+9. Window auto-resizing.
 
 ## Contributing
 

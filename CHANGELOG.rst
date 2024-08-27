@@ -2,12 +2,16 @@
 Changelog
 ==================
 
-Version 0.1.3 (2024-08-14)
+Version 0.1.3 (2024-08-28)
 --------------------------
 
 * [Bugfix] Fixed the issue with the error raised by the *Application* class when am *signal.Abort* is handled. The initial error was raised due to the fact that the *handle_abordt* method did not accepted the signal as an argument. The issue has been fixed now.
 * [Bugfix] Fixed quitting mechanism. The previous implementation did not autosave the state while quitting the application. The issue has been fixed now.
-* [Tests] Added unit test for *Application* class. Tested if signals returned from a callback function trigger an error (Error signal is tested for triggering the error handler, alongside unexpected errors). Additionally, tested if the quitting mechanism triggered the *save* method of the **State** during the quitting process.
+* [Miscellaneous] Improved the **State** class. Added *save_except* attribute, which define which values from the state are excepted from saving. Additionally added checks for the existance of *save* method in each object in the *State*. The *save_except* mechanism nullify the pre-check for the mentioned objects.
+* [Miscellaneous] Added the **StateContentNotSavable** exception, which is raised when the *save* method is not implemented in the objects within the *State* class.
+* [Tests] Added unit test for *Application* class. Tested if signals returned from a callback function trigger an error (Error signal is tested for triggering the error handler, alongside unexpected errors). 
+* [Tests] Additionally, tested if the quitting mechanism triggered the *save* method of the **State** during the quitting process and all its implications. Added testing for the State pre-checks method. 
+* [Documentation] Improved the documentation. Added more information about the *State* class and its implications. Additionally, added information about the *save_except* attribute and the *StateContentNotSavable* exception.
 
 Version 0.1.2 (2024-08-12)
 --------------------------
