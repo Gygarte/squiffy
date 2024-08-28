@@ -2,6 +2,11 @@
 Changelog
 ==================
 
+Version 0.1.4 (2024-08-28)
+--------------------------
+
+* [Bugfix] Fixed (again) the saving mechanism in **State**. Change to save_except based on key in in the dictionary. Changed the try-except clause in the *save* method to cover only the *value.save()* if it's not save_excepted.
+
 Version 0.1.3 (2024-08-28)
 --------------------------
 
